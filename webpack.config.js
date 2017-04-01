@@ -17,8 +17,17 @@ var config = {
           test: /\.jsx?/,
           include: APP_DIR,
           loader: 'babel-loader'
-      }
-      ]
+      }, {
+          test: /\.css/,
+          loader: 'style-loader'
+      }, {
+          test: /\.css/,
+          loader: 'css-loader',
+          query: {
+              modules: true,
+              localIndentName: '[name]__[local]__[hash:base64:5]'
+          }
+      }]
   }
 };
 
