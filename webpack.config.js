@@ -27,7 +27,11 @@ var config = {
               modules: true,
               localIndentName: '[name]__[local]__[hash:base64:5]'
           }
-      }]
+      }, {
+          test: /\.less/,
+          loader: 'less-loader'
+      }
+      ]
   }
 };
 
