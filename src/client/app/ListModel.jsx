@@ -43,9 +43,15 @@ class ListModel extends React.Component {
             }
         });
         // this is weird it doesn't set itemArray to empty...
-        this.setState({items:itemArray});
-        console.log(this.state.items);
-        this.store(this.state.nameTag, this.state.items);
+        if (itemArray.length == 0) {
+            this.setState({items: []});
+        } else {
+            this.setState({items:itemArray});
+        }
+        console.log(itemArray);         // this gives [] - expected
+        console.log(this.state.items);  // this always has one more object than what is in itemArray... WTF?
+        this.store(this.state.nameTag, itemArray);
+
     }
 
     handleAddItem(itemText) {
