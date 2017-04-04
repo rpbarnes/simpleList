@@ -26,16 +26,28 @@ class ListModel extends React.Component {
         };
         this.handleAddItem = this.handleAddItem.bind(this);
         this.handleTextChanged = this.handleTextChanged.bind(this);
-        this.store = this.store.bind(this);
         this.handleCheckBox = this.handleCheckBox.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     } 
 
     // Use this to load in old items
     componentWillMount() {
         // this runs right before rendering. I have to wait until this.store is defined before I can call it. I don't think this is the best way to do this though...
-        this.setState({items: this.store(this.state.nameTag)}); 
+        this.setState({items: this.load(this.state.nameTag)}); 
     }
     
+    handleDelete(keyChecked) {
+        var itemArray = this.state.items.filter( function(item) {
+            if (item.key !== keyChecked) {
+                return item;
+            }
+        });
+        // this is weird it doesn't set itemArray to empty...
+        this.setState({items:itemArray});
+        console.log(this.state.items);
+        this.store(this.state.nameTag, this.state.items);
+    }
+
     handleAddItem(itemText) {
         // add item to local storage and to the this.state.items array
         var itemArray = this.state.items;
@@ -69,14 +81,15 @@ class ListModel extends React.Component {
     }
 
     store(nameTag, data) {
-        // If I pass data write it to local storage. If not pull the nameTag from localStorage.
-        if (data) {
-            return localStorage.setItem(nameTag,JSON.stringify(data));
-        } else {
-            var fromStore = localStorage.getItem(nameTag);
-            return (fromStore && JSON.parse(fromStore)) || []; // This is straight from somewhere else I'm guessing this puts the json string to an array elemet.
-        }
+        console.log(data);
+        return localStorage.setItem(nameTag,JSON.stringify(data));
     }
+
+    load(nameTag) {
+        var fromStore = localStorage.getItem(nameTag);
+        return (fromStore && JSON.parse(fromStore)) || []; // This is straight from somewhere else I'm guessing this puts the json string to an array elemet.
+    }
+        
 
     handleTextChanged(itemText) { // this way I'm, explicitly recieving a variable from the child.
         this.setState({text: itemText});
@@ -88,7 +101,7 @@ class ListModel extends React.Component {
                 <div className={styles.todoListMain}>
                     <div className={styles.header}>
                         <ListItem callBackParent={this.handleTextChanged} onAddItem={this.handleAddItem} text={this.state.text} value={this.state.value}/>
-                        <ListDisplay entries={this.state.items} onCheckBox={this.handleCheckBox}/>
+                        <ListDisplay entries={this.state.items} onCheckBox={this.handleCheckBox} onDelete={this.handleDelete}/>
                     </div>
                 </div>
             </div>

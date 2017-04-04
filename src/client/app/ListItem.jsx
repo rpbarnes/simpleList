@@ -29,7 +29,6 @@ class ListItem extends React.Component {
             <form onSubmit={this.addItem}>
                 <input type='text' value={this.state.value} onChange={(e) => this.handleChange(e)}>
                 </input>
-                <button type='submit'>+</button>
             </form>
         );
     }
