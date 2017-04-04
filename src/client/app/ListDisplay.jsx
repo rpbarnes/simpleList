@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '../../css/base.css';
 import Button from 'react-bootstrap/lib/Button';
+import Trash from 'react-icons/lib/fa/trash';
 
 class ListDisplay extends React.Component {
     // this should handle the add item and keeping track of the all the items in the list
@@ -31,7 +32,7 @@ class ListDisplay extends React.Component {
                     <li key={key} className='list-group-item' data-color='success'>
                         <label><input key={key} type='checkbox' value='' checked={checked} onChange={handleCheckBox.bind(this, key)}/></label>
                         {item.text}
-                        <Button key={key} onClick={handleDeleteButton.bind(this,key)}>Delete</Button>
+                        <Button className='btn btn-primary pull-right' key={key} onClick={handleDeleteButton.bind(this,key)}><Trash /></Button>
                     </li>
             );
         }
