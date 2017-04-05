@@ -9,6 +9,7 @@ class ListDisplay extends React.Component {
         super(props);
         this.handleCheckBox = this.handleCheckBox.bind(this);
         this.handleDeleteButton = this.handleDeleteButton.bind(this);
+        this.handleItemClick = this.handleItemClick.bind(this);
     } 
     
     handleCheckBox(keyChecked) {
@@ -19,21 +20,29 @@ class ListDisplay extends React.Component {
         this.props.onDelete(keyChecked);
     }
 
+    handleItemClick(key) {
+        this.props.onItemClick(key);
+    }
+
+
     render () {
         var listEntries = this.props.entries;
         var handleCheckBox = this.handleCheckBox;
         var handleDeleteButton = this.handleDeleteButton;
+        var handleItemClick = this.handleItemClick;
         // can you do this in jsx?
         function createList(item) {
             // check item.checked and fill in the checkbox 
             var key = item.key;
             var checked = item.checked;
             return (
-                    <li key={key} className='list-group-item' data-color='success'>
+                    <Button key={key} onClick={handleItemClick.bind(this,key)} className='list-group-item list-group-item-action' data-color='success'>
                         <label><input key={key} type='checkbox' value='' checked={checked} onChange={handleCheckBox.bind(this, key)}/></label>
+                        <span>
                         {item.text}
+                        </span>
                         <Button className='btn btn-primary pull-right' key={key} onClick={handleDeleteButton.bind(this,key)}><Trash /></Button>
-                    </li>
+                    </Button>
             );
         }
         var listItems = listEntries.map(createList);

@@ -22,12 +22,15 @@ class ListModel extends React.Component {
             nameTag: this.props.nameTag,
             items: [],
             text: '',
-            value: ''
+            value: '',
+            activeItem: ''
         };
         this.handleAddItem = this.handleAddItem.bind(this);
         this.handleTextChanged = this.handleTextChanged.bind(this);
         this.handleCheckBox = this.handleCheckBox.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleItemClick = this.handleItemClick.bind(this);
+        this.getItem = this.getItem.bind(this);
     } 
 
     // Use this to load in old items
@@ -70,6 +73,20 @@ class ListModel extends React.Component {
         event.preventDefault();
     }
 
+    handleItemClick(keyClicked) {
+        this.getItem(keyClicked);
+        console.log(this.state.activeItem);
+    }
+
+    getItem(keyToFind) {
+        // sets the activeItem that corresponds to keyToFind
+        var key = this.props.keyToFind;
+        var item = this.state.items.filter( function(item){
+            return (item.key === keyToFind);
+        });
+        this.setState({activeItem:item}) 
+    }
+
     handleCheckBox(keyChecked) {
         var items = [];
         this.state.items.map(function(item) {
@@ -107,7 +124,7 @@ class ListModel extends React.Component {
                 <div className={styles.todoListMain}>
                     <div className={styles.header}>
                         <ListItem callBackParent={this.handleTextChanged} onAddItem={this.handleAddItem} text={this.state.text} value={this.state.value}/>
-                        <ListDisplay entries={this.state.items} onCheckBox={this.handleCheckBox} onDelete={this.handleDelete}/>
+                        <ListDisplay entries={this.state.items} onItemClick={this.handleItemClick} onCheckBox={this.handleCheckBox} onDelete={this.handleDelete}/>
                     </div>
                 </div>
             </div>
